@@ -5,7 +5,7 @@ import Main from "./components/Main";
 import Sidebar from "./components/Sidebar";
 
 const theme = {
-  viewports: {
+  width: {
     tablet: "768px",
     desktop: "1200px",
   },
@@ -24,6 +24,8 @@ const theme = {
     lightOrange: "#F39765",
   },
 };
+
+console.log(theme.width.tablet);
 
 function App() {
   return (

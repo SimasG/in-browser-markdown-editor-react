@@ -4,7 +4,7 @@ const Header = () => {
   const toggleSlideMenu = () => {
     const sidebar = document.querySelector(".sidebar");
     const header = document.querySelector(".header");
-    const main = document.querySelector(".main");
+    const main = document.querySelector(".main-container");
 
     if (header.classList.contains("open")) {
       header.classList.remove("open");
