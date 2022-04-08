@@ -24,7 +24,7 @@ body {
 }
 
 h1, h2, h3, h4, p, li, ul, span, a, button {
-    color: #fff;
+    color: #000;
     list-style-type: none;
     text-decoration: none;
 }
