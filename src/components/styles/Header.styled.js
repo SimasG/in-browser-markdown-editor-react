@@ -6,6 +6,8 @@ export const StyledHeader = styled.header`
   align-items: center;
   background-color: ${(props) => props.theme.colors.black3};
   padding: 0 1rem 0 0;
+  position: relative;
+  transition: 0.5s;
   .burger-menu {
     padding: 1.7rem;
     background-color: ${(props) => props.theme.colors.black4};

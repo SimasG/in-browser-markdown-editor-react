@@ -5,10 +5,12 @@ export const StyledSidebar = styled.nav`
   top: 0;
   left: 0;
   background-color: ${(props) => props.theme.colors.black2};
-  display: none;
+  width: 25rem;
   height: 100vh;
   overflow-x: hidden;
   padding: 2rem 1.5rem;
+  left: -25rem;
+  transition: 0.5s;
   .logo {
     font-size: 1.5rem;
     font-weight: bold;

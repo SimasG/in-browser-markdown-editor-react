@@ -4,16 +4,20 @@ const Header = () => {
   const toggleSlideMenu = () => {
     const sidebar = document.querySelector(".sidebar");
     const header = document.querySelector(".header");
+    const main = document.querySelector(".main");
+
     if (header.classList.contains("open")) {
       header.classList.remove("open");
-      sidebar.style.width = "0";
       sidebar.style.display = "none";
-      header.style.marginLeft = "0";
+      sidebar.style.left = "-250px";
+      header.style.left = "0";
+      main.style.left = "0";
     } else {
       header.classList.add("open");
-      sidebar.style.width = "250px";
       sidebar.style.display = "block";
-      header.style.marginLeft = "250px";
+      sidebar.style.left = "0";
+      header.style.left = "250px";
+      main.style.left = "250px";
     }
   };
 
