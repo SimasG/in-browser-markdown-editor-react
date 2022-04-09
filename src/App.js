@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { marked } from "marked";
 import GlobalStyles from "./components/styles/Global";
 import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
@@ -25,16 +27,29 @@ const theme = {
   },
 };
 
-console.log(theme.width.tablet);
-
 function App() {
+  const [editorState, setEditorState] = useState("");
+
+  const handleChange = (e) => {
+    const text = e.target.value;
+    setEditorState(text);
+  };
+
+  const renderText = (text) => {
+    const __html = marked.parse(text, { sanitize: true });
+    return { __html };
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <>
         <GlobalStyles />
         <Header />
         <Sidebar />
-        <Main />
+        <Main
+          handleChange={handleChange}
+          renderText={renderText(editorState)}
+        />
       </>
     </ThemeProvider>
   );

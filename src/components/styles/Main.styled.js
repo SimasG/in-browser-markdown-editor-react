@@ -27,9 +27,10 @@ export const StyledMain = styled.main`
           color: ${(props) => props.theme.colors.gray2};
         }
         div {
-          img {
-            width: 1.586rem;
-            height: 1.426rem;
+          cursor: pointer;
+          .icon-show-preview {
+            width: 1.6rem;
+            height: 1.12rem;
             color: ${(props) => props.theme.colors.gray2};
           }
         }
@@ -38,13 +39,19 @@ export const StyledMain = styled.main`
         background-color: #fff;
         height: 100vh;
         padding: 2rem 1rem;
+        textarea {
+          width: 100%;
+          height: 100%;
+          resize: none;
+          padding: 1rem;
+          outline: none;
+        }
       }
     }
     .border {
       height: 100%;
       width: 0.3rem;
       background-color: ${(props) => props.theme.colors.gray4};
-      display: none;
     }
     .preview-container {
       width: 100%;
@@ -64,9 +71,21 @@ export const StyledMain = styled.main`
           color: ${(props) => props.theme.colors.gray2};
         }
         div {
-          img {
+          cursor: pointer;
+          .icon-show-preview {
             width: 1.6rem;
             height: 1.12rem;
+            color: ${(props) => props.theme.colors.gray2};
+            display: none;
+          }
+          .icon-show-preview-preview.open {
+            width: 1.6rem;
+            height: 1.12rem;
+            color: ${(props) => props.theme.colors.gray2};
+          }
+          .icon-hide-preview {
+            width: 1.586rem;
+            height: 1.426rem;
             color: ${(props) => props.theme.colors.gray2};
           }
         }
@@ -80,15 +99,65 @@ export const StyledMain = styled.main`
   }
 
   /* Mobile view */
-  /* @media (min-width: ${(props) => props.theme.width.tablet}) { */
-  @media (min-width: 768px) {
+  @media (min-width: ${(props) => props.theme.width.tablet}) {
     .main-container {
+      background: ${(props) => props.theme.colors.gray4};
       flex-direction: row;
+      .markdown-container {
+        .markdown-title-container {
+          .markdown-container-title {
+          }
+          div {
+            .icon-show-preview {
+              width: 2.6rem;
+              height: 2.12rem;
+              color: ${(props) => props.theme.colors.gray2};
+              display: none;
+            }
+            .icon-hide-preview {
+              width: 2.586rem;
+              height: 2.426rem;
+              color: ${(props) => props.theme.colors.gray2};
+              display: none;
+            }
+          }
+        }
+        .markdown-subcontainer {
+          textarea {
+          }
+        }
+      }
       .border {
         display: block;
       }
       .preview-container {
         display: block;
+        #preview-container {
+          display: flex;
+        }
+        .preview-title-container {
+          .preview-container-title {
+          }
+          div {
+            .icon-show-preview {
+              width: 1.6rem;
+              height: 1.12rem;
+              color: ${(props) => props.theme.colors.gray2};
+              display: block;
+            }
+            .icon-hide-preview {
+              width: 1.586rem;
+              height: 1.426rem;
+              color: ${(props) => props.theme.colors.gray2};
+              display: none;
+            }
+          }
+        }
+        .preview-subcontainer {
+          background-color: #fff;
+          height: 100vh;
+          padding: 2rem 1rem;
+        }
       }
     }
   }
