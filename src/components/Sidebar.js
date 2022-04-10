@@ -1,24 +1,29 @@
 import { StyledSidebar } from "./styles/Sidebar.styled";
 
-function Sidebar() {
+function Sidebar({ files, setFiles }) {
+  const createNewDocument = () => {};
   return (
     <StyledSidebar className="sidebar">
-      <span className="logo">MARKDOWN</span>
+      <p className="logo">MARKDOWN</p>
       <section className="document-section">
-        <h6>MY DOCUMENTS</h6>
-        <button>+ New Document</button>
+        <h6 className="my-documents-title">MY DOCUMENTS</h6>
+        <button onClick={createNewDocument}>+ New Document</button>
         <div className="current-document-container">
-          <div className="current-document">
-            <img
-              className="icon-document"
-              src="./assets/icon-document.svg"
-              alt=""
-            />
-            <div className="current-document-subsection">
-              <p className="date">01 April 2022</p>
-              <h6 className="document-name">welcome.md</h6>
-            </div>
-          </div>
+          {files.map((file) => {
+            return (
+              <div className="current-document">
+                <img
+                  className="icon-document"
+                  src="./assets/icon-document.svg"
+                  alt=""
+                />
+                <div className="current-document-subsection">
+                  <p className="date">Current Date</p>
+                  <h6 className="document-name">{file.name}</h6>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
     </StyledSidebar>

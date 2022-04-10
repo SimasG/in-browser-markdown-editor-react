@@ -16,14 +16,16 @@ export const StyledSidebar = styled.nav`
     font-weight: bold;
     letter-spacing: 0.5rem;
     color: #fff;
+    margin-bottom: 3rem;
   }
   .document-section {
-    h6 {
+    .my-documents-title {
       font-family: "Roboto", sans-serif;
       font-weight: medium;
       letter-spacing: 2px;
       font-weight: 1.4rem;
       color: ${(props) => props.theme.colors.gray2};
+      margin-bottom: 3rem;
     }
     button {
       font-family: "Roboto", sans-serif;
@@ -33,6 +35,7 @@ export const StyledSidebar = styled.nav`
       color: #fff;
       border-radius: 4px;
       background-color: ${(props) => props.theme.colors.brightOrange};
+      margin-bottom: 2rem;
     }
     .current-document-container {
       .current-document {
@@ -40,6 +43,7 @@ export const StyledSidebar = styled.nav`
         justify-content: start;
         align-items: center;
         gap: 1.5rem;
+        margin-bottom: 2rem;
         .current-document-subsection {
           .date {
             font-family: "Roboto", sans-serif;

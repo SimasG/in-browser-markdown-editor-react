@@ -21,6 +21,10 @@ const Header = () => {
     }
   };
 
+  const addDeleteModal = () => {
+    document.querySelector(".delete-modal-container").style.display = "flex";
+  };
+
   return (
     <StyledHeader className="header open">
       <button className="burger-menu" onClick={toggleSlideMenu}>
@@ -30,7 +34,12 @@ const Header = () => {
         <img src="./assets/icon-document.svg" alt="" />
         <p className="current-file-name">welcome.md</p>
       </div>
-      <img className="delete" src="./assets/icon-delete.svg" alt="" />
+      <img
+        onClick={addDeleteModal}
+        className="delete"
+        src="./assets/icon-delete.svg"
+        alt=""
+      />
       <div className="save-file-icon">
         <img src="./assets/icon-save.svg" alt="" />
       </div>

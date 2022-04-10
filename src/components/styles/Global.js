@@ -31,41 +31,54 @@ h1, h2, h3, h4, p, li, ul, span, a, button {
 h1 {
     font-family: 'Roboto Slab', serif;
     font-size: 3.2rem;
+    font-weight: bold;
 }
 
 h2 {
     font-family: 'Roboto Slab', serif;
     font-size: 2.8rem;
-    letter-spacing: -0.15rem;
+    font-weight: 300;
 }
 
 h3 {
     font-family: 'Roboto Slab', serif;
     font-size: 2.4rem;
-    letter-spacing: 0.26rem;
+    font-weight: bold;
 }
 
 h4 {
     font-family: 'Roboto Slab', serif;
     font-size: 2rem;
-    letter-spacing: 0.1rem;
+    font-weight: bold;
 }
 
 h5 {
     font-family: 'Roboto Slab', serif;
     font-size: 1.6rem;
-    letter-spacing: 0.1rem;
+    font-weight: bold;
 }
 
 h6 {
     font-family: 'Roboto Slab', serif;
     font-size: 1.4rem;
+    font-weight: bold;
+    color: ${(props) => props.theme.colors.brightOrange}
 }
 
 p {
     font-family: 'Roboto Slab', serif;
     font-size: 1.4rem;
     line-height: 2.4rem;
+    font-weight: 400;
+    color: ${(props) => props.theme.colors.gray2}
+}
+
+code {
+    font-family: 'Roboto Mono', serif;
+    font-size: 1.4rem;
+    line-height: 2.4rem;
+    font-weight: 400;
+    color: ${(props) => props.theme.colors.black4}
 }
 
 ul, li, button {

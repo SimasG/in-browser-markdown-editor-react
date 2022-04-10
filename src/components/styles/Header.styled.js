@@ -22,6 +22,7 @@ export const StyledHeader = styled.header`
     }
   }
   .delete {
+    cursor: pointer;
   }
   .save-file-icon {
     padding: 1.1rem;

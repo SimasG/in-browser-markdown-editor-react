@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { marked } from "marked";
 import GlobalStyles from "./components/styles/Global";
 import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Sidebar from "./components/Sidebar";
+import DeleteModal from "./components/DeleteModal";
+import { db } from "./firebase-config";
+import { collection, getDocs } from "firebase/firestore";
 
 const theme = {
   width: {
@@ -29,6 +32,20 @@ const theme = {
 
 function App() {
   const [editorState, setEditorState] = useState("");
+  const [files, setFiles] = useState([]);
+  // Creating a reference to a specific collection in Firestore. It allows to work with the data here.
+  const filesCollectionRef = collection(db, "files");
+
+  useEffect(() => {
+    const getFiles = async () => {
+      // "getDocs" returns documents from a specific collection
+      const data = await getDocs(filesCollectionRef);
+      // "doc.data" accesses the collection fields/documents without the id, that's why we
+      // destructure it and add the id for each entry manually
+      setFiles(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getFiles();
+  }, []);
 
   const handleChange = (e) => {
     const text = e.target.value;
@@ -45,11 +62,12 @@ function App() {
       <>
         <GlobalStyles />
         <Header />
-        <Sidebar />
+        <Sidebar files={files} setFiles={setFiles} />
         <Main
           handleChange={handleChange}
           renderText={renderText(editorState)}
         />
+        <DeleteModal />
       </>
     </ThemeProvider>
   );
