@@ -21,7 +21,7 @@ const Header = () => {
     }
   };
 
-  const addDeleteModal = () => {
+  const openDeleteModal = () => {
     document.querySelector(".delete-modal-container").style.display = "flex";
   };
 
@@ -35,7 +35,7 @@ const Header = () => {
         <p className="current-file-name">welcome.md</p>
       </div>
       <img
-        onClick={addDeleteModal}
+        onClick={openDeleteModal}
         className="delete"
         src="./assets/icon-delete.svg"
         alt=""

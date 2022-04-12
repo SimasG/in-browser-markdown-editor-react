@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { marked } from "marked";
+import DOMPurify from "dompurify";
 import GlobalStyles from "./components/styles/Global";
 import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Sidebar from "./components/Sidebar";
 import DeleteModal from "./components/DeleteModal";
+import NewFileModal from "./components/NewFileModal";
 import { db } from "./firebase-config";
 import { collection, getDocs } from "firebase/firestore";
 
@@ -33,10 +35,17 @@ const theme = {
 function App() {
   const [editorState, setEditorState] = useState("");
   const [files, setFiles] = useState([]);
-  // Creating a reference to a specific collection in Firestore. It allows to work with the data here.
-  const filesCollectionRef = collection(db, "files");
+  // Storing the value of the document's new name in a state so it could be easily accessed by Firestore
+  const [newFileName, setNewFileName] = useState("");
 
+  const createFile = () => {
+    console.log(`New file name is ${newFileName}`);
+  };
+
+  // CRUD -> R
   useEffect(() => {
+    // Creating a reference to a specific collection in Firestore. It allows to work with the data here.
+    const filesCollectionRef = collection(db, "files");
     const getFiles = async () => {
       // "getDocs" returns documents from a specific collection
       const data = await getDocs(filesCollectionRef);
@@ -53,7 +62,8 @@ function App() {
   };
 
   const renderText = (text) => {
-    const __html = marked.parse(text, { sanitize: true });
+    const __htmlDirty = marked.parse(text);
+    const __html = DOMPurify.sanitize(__htmlDirty);
     return { __html };
   };
 
@@ -62,12 +72,19 @@ function App() {
       <>
         <GlobalStyles />
         <Header />
-        <Sidebar files={files} setFiles={setFiles} />
+        <Sidebar
+          files={files}
+          setFiles={setFiles}
+          setNewFileName={setNewFileName}
+          newFileName={newFileName}
+          createFile={createFile}
+        />
         <Main
           handleChange={handleChange}
           renderText={renderText(editorState)}
         />
         <DeleteModal />
+        <NewFileModal />
       </>
     </ThemeProvider>
   );
