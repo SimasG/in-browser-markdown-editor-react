@@ -58,6 +58,18 @@ export const StyledSidebar = styled.nav`
             font-weight: 400;
             color: #fff;
           }
+          .document-name-input {
+            outline: none;
+            border: none;
+            background: transparent;
+            color: #fff;
+            font-size: 1.5rem;
+            font-family: "Roboto", sans-serif;
+            display: none;
+          }
+          .update-btn {
+            width: 10rem;
+          }
         }
       }
     }

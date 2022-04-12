@@ -1,12 +1,14 @@
 import { StyledSidebar } from "./styles/Sidebar.styled";
 import { db } from "../firebase-config";
 import { updateDoc, doc } from "firebase/firestore";
+import { useState } from "react";
 
 function Sidebar({ files }) {
-  const updateFileName = async (id) => {
+  const [newFileName, setNewFileName] = useState("");
+
+  const updateFileName = async (id, newName) => {
     const fileDoc = doc(db, "files", id);
-    // const newName = "some input bs";
-    const newFields = { name: "new-file.md" };
+    const newFields = { name: newName };
     // should I put "await" for "updateDoc()"?
     updateDoc(fileDoc, newFields);
   };
@@ -35,10 +37,32 @@ function Sidebar({ files }) {
                 />
                 <div className="current-document-subsection">
                   <p className="date">Current Date</p>
-                  <h6 className="document-name">{file.name}</h6>
-                  <button
+                  <h6
+                    id={file.id}
+                    className="document-name"
                     onClick={() => {
-                      updateFileName(file.id, file.name);
+                      document.querySelector(`#${file.id}`).style.display =
+                        "none";
+                      document.querySelector(`#${file.id + 1}`).style.display =
+                        "block";
+                    }}
+                  >
+                    {file.name}
+                  </h6>
+                  <input
+                    id={file.id + 1}
+                    className="document-name-input"
+                    placeholder={file.name}
+                    onChange={(e) => {
+                      // why is "newFileName" one letter behind "e.target.value"
+                      setNewFileName(e.target.value);
+                      updateFileName(file.id, e.target.value);
+                    }}
+                  ></input>
+                  <button
+                    className="update-btn"
+                    onClick={() => {
+                      updateFileName(file.id, newFileName);
                     }}
                   >
                     Update
