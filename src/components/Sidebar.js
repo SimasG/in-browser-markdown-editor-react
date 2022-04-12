@@ -1,10 +1,7 @@
+import { useState } from "react";
 import { StyledSidebar } from "./styles/Sidebar.styled";
 
-function Sidebar({ files, newFileName, setNewFileName, createFile }) {
-  const openAddFileModal = () => {
-    document.querySelector(".new-file-modal-container").style.display = "flex";
-  };
-
+function Sidebar({ files }) {
   return (
     <StyledSidebar className="sidebar">
       <p className="logo">MARKDOWN</p>
@@ -12,16 +9,9 @@ function Sidebar({ files, newFileName, setNewFileName, createFile }) {
         <h6 className="my-documents-title">MY DOCUMENTS</h6>
         <button
           onClick={() => {
-            openAddFileModal();
-            // setNewFileName("doggo");
-            // console.log(newFileName);
+            document.querySelector(".new-file-modal-container").style.display =
+              "flex";
           }}
-          setNewFileName={setNewFileName}
-          newFileName={newFileName}
-          // onCLick={() => {
-          //   console.log(`setNewFileName is: ${setNewFileName}`);
-          // }}
-          // createFile={createFile}
         >
           + New Document
         </button>

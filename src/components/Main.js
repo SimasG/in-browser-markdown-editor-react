@@ -1,8 +1,23 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { StyledMain } from "./styles/Main.styled";
 import useWindowWidth from "../hooks/useWindowWidth";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 
-function Main({ handleChange, renderText }) {
+function Main() {
+  const [editorState, setEditorState] = useState("");
+
+  const handleChange = (e) => {
+    const text = e.target.value;
+    setEditorState(text);
+  };
+
+  const renderText = (mdText) => {
+    const __htmlDirty = marked.parse(mdText);
+    const __html = DOMPurify.sanitize(__htmlDirty);
+    return { __html };
+  };
+
   const { width } = useWindowWidth();
 
   useEffect(() => {
@@ -64,7 +79,7 @@ function Main({ handleChange, renderText }) {
             </div>
           </div>
           <div className="preview-subcontainer">
-            <div dangerouslySetInnerHTML={renderText}></div>
+            <div dangerouslySetInnerHTML={renderText(editorState)}></div>
           </div>
         </section>
       </section>

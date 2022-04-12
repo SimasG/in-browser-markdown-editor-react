@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { marked } from "marked";
-import DOMPurify from "dompurify";
 import GlobalStyles from "./components/styles/Global";
 import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
@@ -33,14 +31,7 @@ const theme = {
 };
 
 function App() {
-  const [editorState, setEditorState] = useState("");
   const [files, setFiles] = useState([]);
-  // Storing the value of the document's new name in a state so it could be easily accessed by Firestore
-  const [newFileName, setNewFileName] = useState("");
-
-  const createFile = () => {
-    console.log(`New file name is ${newFileName}`);
-  };
 
   // CRUD -> R
   useEffect(() => {
@@ -56,33 +47,13 @@ function App() {
     getFiles();
   }, []);
 
-  const handleChange = (e) => {
-    const text = e.target.value;
-    setEditorState(text);
-  };
-
-  const renderText = (text) => {
-    const __htmlDirty = marked.parse(text);
-    const __html = DOMPurify.sanitize(__htmlDirty);
-    return { __html };
-  };
-
   return (
     <ThemeProvider theme={theme}>
       <>
         <GlobalStyles />
         <Header />
-        <Sidebar
-          files={files}
-          setFiles={setFiles}
-          setNewFileName={setNewFileName}
-          newFileName={newFileName}
-          createFile={createFile}
-        />
-        <Main
-          handleChange={handleChange}
-          renderText={renderText(editorState)}
-        />
+        <Sidebar files={files} setFiles={setFiles} />
+        <Main />
         <DeleteModal />
         <NewFileModal />
       </>
