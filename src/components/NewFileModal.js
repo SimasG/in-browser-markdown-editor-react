@@ -1,9 +1,18 @@
 import { useState } from "react";
 import { StyledNewFileModal } from "./styles/NewFileModal.styled";
+import { db } from "../firebase-config";
+import { collection, addDoc } from "firebase/firestore";
 
-function NewFileModal({ createFile }) {
+function NewFileModal() {
   // Storing the value of the document's new name in a state so it could be easily accessed by Firestore
   const [newFileName, setNewFileName] = useState("");
+
+  // CRUD -> C
+  const createFile = async (e) => {
+    e.preventDefault();
+    const filesCollectionRef = collection(db, "files");
+    await addDoc(filesCollectionRef, { name: newFileName });
+  };
 
   return (
     <StyledNewFileModal
@@ -36,7 +45,9 @@ function NewFileModal({ createFile }) {
             console.log(newFileName);
           }}
         />
-        <button type="submit">Create New File</button>
+        <button type="submit" onClick={createFile}>
+          Create New File
+        </button>
       </form>
     </StyledNewFileModal>
   );

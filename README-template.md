@@ -16,5 +16,6 @@ TODO: (maybe) fix small things
 
 - sidebar transition
 - Markdown (block quote, code block)
+- Auto refresh for newly created/deleted/updated firestore collections/documents
 
 Animated Slide Out Sidebar Navigation Menu Tutorial with HTML5 and CSS3: https://www.youtube.com/watch?v=IOOtDmh-NZw&ab_channel=w3newbie

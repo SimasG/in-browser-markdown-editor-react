@@ -1,7 +1,16 @@
-import { useState } from "react";
 import { StyledSidebar } from "./styles/Sidebar.styled";
+import { db } from "../firebase-config";
+import { updateDoc, doc } from "firebase/firestore";
 
 function Sidebar({ files }) {
+  const updateFileName = async (id) => {
+    const fileDoc = doc(db, "files", id);
+    // const newName = "some input bs";
+    const newFields = { name: "new-file.md" };
+    // should I put "await" for "updateDoc()"?
+    updateDoc(fileDoc, newFields);
+  };
+
   return (
     <StyledSidebar className="sidebar">
       <p className="logo">MARKDOWN</p>
@@ -27,6 +36,13 @@ function Sidebar({ files }) {
                 <div className="current-document-subsection">
                   <p className="date">Current Date</p>
                   <h6 className="document-name">{file.name}</h6>
+                  <button
+                    onClick={() => {
+                      updateFileName(file.id, file.name);
+                    }}
+                  >
+                    Update
+                  </button>
                 </div>
               </div>
             );
