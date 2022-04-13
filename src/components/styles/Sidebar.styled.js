@@ -45,6 +45,10 @@ export const StyledSidebar = styled.nav`
         gap: 1.5rem;
         margin-bottom: 2rem;
         border-radius: 4px;
+        cursor: pointer;
+        :hover {
+          background-color: ${(props) => props.theme.colors.black3};
+        }
         .current-document-subsection {
           .date {
             font-family: "Roboto", sans-serif;
@@ -57,6 +61,11 @@ export const StyledSidebar = styled.nav`
             font-size: 1.5rem;
             font-weight: 400;
             color: #fff;
+            padding: 0.5rem 0;
+            border-radius: 4px;
+            :hover {
+              background: ${(props) => props.theme.colors.black3};
+            }
           }
           .document-name-input {
             outline: none;
@@ -65,7 +74,7 @@ export const StyledSidebar = styled.nav`
             color: #fff;
             font-size: 1.5rem;
             font-family: "Roboto", sans-serif;
-            display: none;
+            padding: 0.5rem 0;
           }
           .update-btn {
             width: 10rem;

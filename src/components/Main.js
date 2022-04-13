@@ -1,16 +1,24 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { StyledMain } from "./styles/Main.styled";
 import useWindowWidth from "../hooks/useWindowWidth";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
+import useFetchFiles from "../hooks/useFetchFiles";
 
-function Main() {
-  const [editorState, setEditorState] = useState("");
-
+function Main({ editorState, setEditorState, id }) {
   const handleChange = (e) => {
     const text = e.target.value;
     setEditorState(text);
   };
+
+  const files = useFetchFiles();
+
+  useEffect(() => {
+    if (!files) return;
+    const currentFile = files.find((file) => file.id === id);
+    if (!currentFile) return;
+    setEditorState(currentFile.content);
+  }, [files, id, setEditorState]);
 
   const renderText = (mdText) => {
     const __htmlDirty = marked.parse(mdText);
@@ -58,7 +66,11 @@ function Main() {
             </div>
           </div>
           <div className="markdown-subcontainer">
-            <textarea onChange={handleChange} className="markdown-text" />
+            <textarea
+              onChange={handleChange}
+              value={editorState}
+              className="markdown-text"
+            />
           </div>
         </section>
         <div className="border"></div>

@@ -1,6 +1,12 @@
 import { StyledHeader } from "./styles/Header.styled";
+import { doc, updateDoc, Timestamp } from "firebase/firestore";
+import { db } from "../firebase-config";
+import toast from "react-hot-toast";
+import useFetchFiles from "../hooks/useFetchFiles";
 
-const Header = () => {
+const Header = ({ id, editorState }) => {
+  const files = useFetchFiles();
+
   const toggleSlideMenu = () => {
     const sidebar = document.querySelector(".sidebar");
     const header = document.querySelector(".header");
@@ -25,6 +31,15 @@ const Header = () => {
     document.querySelector(".delete-modal-container").style.display = "flex";
   };
 
+  const saveFile = async (e) => {
+    const filesCollectionRef = doc(db, "files", id);
+    await updateDoc(filesCollectionRef, {
+      content: editorState,
+      updatedAt: Timestamp.fromDate(new Date()),
+    });
+    toast.success("File successfully updated!");
+  };
+
   return (
     <StyledHeader className="header open">
       <button className="burger-menu" onClick={toggleSlideMenu}>
@@ -32,7 +47,9 @@ const Header = () => {
       </button>
       <div className="current-file">
         <img src="./assets/icon-document.svg" alt="" />
-        <p className="current-file-name">welcome.md</p>
+        <p className="current-file-name">
+          {files && id && `${files.find((file) => file.id === id).name}`}
+        </p>
       </div>
       <img
         onClick={openDeleteModal}
@@ -40,7 +57,7 @@ const Header = () => {
         src="./assets/icon-delete.svg"
         alt=""
       />
-      <div className="save-file-icon">
+      <div onClick={saveFile} className="save-file-icon">
         <img src="./assets/icon-save.svg" alt="" />
       </div>
     </StyledHeader>

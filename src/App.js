@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import GlobalStyles from "./components/styles/Global";
 import { ThemeProvider } from "styled-components";
+import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Sidebar from "./components/Sidebar";
 import DeleteModal from "./components/DeleteModal";
 import NewFileModal from "./components/NewFileModal";
-import { db } from "./firebase-config";
-import { collection, getDocs } from "firebase/firestore";
+import useFetchFiles from "./hooks/useFetchFiles";
 
 const theme = {
   width: {
@@ -31,31 +31,40 @@ const theme = {
 };
 
 function App() {
-  const [files, setFiles] = useState([]);
+  const files = useFetchFiles();
 
-  // CRUD -> R
+  const [editorState, setEditorState] = useState("");
+  const [id, setId] = useState(null);
+
   useEffect(() => {
-    // Creating a reference to a specific collection in Firestore. It allows to work with the data here.
-    const filesCollectionRef = collection(db, "files");
-    const getFiles = async () => {
-      // "getDocs" returns documents from a specific collection
-      const data = await getDocs(filesCollectionRef);
-      // "doc.data" accesses the collection fields/documents without the id, that's why we
-      // destructure it and add the id for each entry manually
-      setFiles(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    getFiles();
-  }, []);
+    // If the files haven't been fetched yet, stop the function
+    if (!files) return;
+    // If id has a truthy state (means we clicked on one of the files), stop the function
+    if (id) return;
+    // Set the Id to the first element in the files array as the default view
+    setId(files[0].id);
+    // The useEffect functions reruns whenever there are changes in files (file.name/file.content) or
+    // the id (not sure how ids could change, maybe when a new file is created and a new id generated?)
+  }, [files, id]);
 
   return (
     <ThemeProvider theme={theme}>
       <>
         <GlobalStyles />
-        <Header />
-        <Sidebar files={files} setFiles={setFiles} />
-        <Main />
+        {/* Passing in the editorState & id props to change the file name according to the state of id */}
+        {/* Aka the file name in the header should reflect the currently viewed file */}
+        <Header editorState={editorState} id={id} />
+        {/* This is where we can set a new (active) id by clicking on the file */}
+        <Sidebar setId={setId} />
+        {/*  */}
+        <Main
+          editorState={editorState}
+          setEditorState={setEditorState}
+          id={id}
+        />
         <DeleteModal />
         <NewFileModal />
+        <Toaster />
       </>
     </ThemeProvider>
   );

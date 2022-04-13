@@ -28,5 +28,6 @@ export const StyledHeader = styled.header`
     padding: 1.1rem;
     border-radius: 4px;
     background-color: ${(props) => props.theme.colors.brightOrange};
+    cursor: pointer;
   }
 `;

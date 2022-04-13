@@ -5,17 +5,30 @@ https://betterprogramming.pub/create-your-own-markdown-editor-with-react-6906ea2
 1. Style setup -> DONE
 2. Layout setup (no need to polish the styles perfectly) -> DONE
 3. MD library setup -> DONE
-4. CRUD
-
-- Frontend setup -> WIP
-- Firestore setup
-
-5. Authentication
+4. CRUD -> WIP
+5. Authentication -> WIP
 
 TODO: (maybe) fix small things
 
 - sidebar transition
 - Markdown (block quote, code block)
-- Auto refresh for newly created/deleted/updated firestore collections/documents
+- Auto refresh for newly created/deleted/updated firestore collections/documents -> DONE (with Firebase hooks)
+- Proper id usage (UUIDs instead of incrementing numbers to Firestore IDs) -> DONE
+- Different background for the active document in the sidebar
+- After creating the doc, modal disappears
 
-Animated Slide Out Sidebar Navigation Menu Tutorial with HTML5 and CSS3: https://www.youtube.com/watch?v=IOOtDmh-NZw&ab_channel=w3newbie
+  const [files, setFiles] = useState([]);
+
+  // CRUD -> R
+  useEffect(() => {
+  // Creating a reference to a specific collection in Firestore. It allows to work with the data here.
+  const filesCollectionRef = collection(db, "files");
+  const getFiles = async () => {
+  // "getDocs" returns documents from a specific collection
+  const data = await getDocs(filesCollectionRef);
+  // "doc.data" accesses the collection fields/documents without the id, that's why we
+  // destructure it and add the id for each entry manually
+  setFiles(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+  getFiles();
+  }, []);

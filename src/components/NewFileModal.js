@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { StyledNewFileModal } from "./styles/NewFileModal.styled";
 import { db } from "../firebase-config";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 
 function NewFileModal() {
   // Storing the value of the document's new name in a state so it could be easily accessed by Firestore
@@ -10,8 +11,14 @@ function NewFileModal() {
   // CRUD -> C
   const createFile = async (e) => {
     e.preventDefault();
-    const filesCollectionRef = collection(db, "files");
-    await addDoc(filesCollectionRef, { name: newFileName });
+    const id = uuidv4();
+    const filesCollectionRef = doc(db, "files", id);
+    await setDoc(filesCollectionRef, {
+      name: newFileName,
+      content: "",
+      id: id,
+      updatedAt: Timestamp.fromDate(new Date()),
+    });
   };
 
   return (
@@ -42,8 +49,8 @@ function NewFileModal() {
           placeholder="File name"
           onChange={(e) => {
             setNewFileName(e.target.value);
-            console.log(newFileName);
           }}
+          value={newFileName}
         />
         <button type="submit" onClick={createFile}>
           Create New File
