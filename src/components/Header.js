@@ -31,6 +31,7 @@ const Header = ({ id, editorState }) => {
     document.querySelector(".delete-modal-container").style.display = "flex";
   };
 
+  // CRUD -> U
   const saveFile = async (e) => {
     const filesCollectionRef = doc(db, "files", id);
     await updateDoc(filesCollectionRef, {
@@ -48,6 +49,7 @@ const Header = ({ id, editorState }) => {
       <div className="current-file">
         <img src="./assets/icon-document.svg" alt="" />
         <p className="current-file-name">
+          {/* Displaying the file name of the document whose id matches the current id state */}
           {files && id && `${files.find((file) => file.id === id).name}`}
         </p>
       </div>
@@ -57,6 +59,7 @@ const Header = ({ id, editorState }) => {
         src="./assets/icon-delete.svg"
         alt=""
       />
+      {/* Storing the current file content state (editorState) on click */}
       <div onClick={saveFile} className="save-file-icon">
         <img src="./assets/icon-save.svg" alt="" />
       </div>

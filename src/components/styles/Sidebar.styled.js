@@ -56,17 +56,6 @@ export const StyledSidebar = styled.nav`
             font-weight: 300;
             color: ${(props) => props.theme.colors.gray2};
           }
-          .document-name {
-            font-family: "Roboto", sans-serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-            color: #fff;
-            padding: 0.5rem 0;
-            border-radius: 4px;
-            :hover {
-              background: ${(props) => props.theme.colors.black3};
-            }
-          }
           .document-name-input {
             outline: none;
             border: none;

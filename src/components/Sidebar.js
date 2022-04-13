@@ -1,18 +1,35 @@
-import { useState } from "react";
 import { StyledSidebar } from "./styles/Sidebar.styled";
 import { db } from "../firebase-config";
-import { updateDoc, doc, Timestamp } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 import useFetchFiles from "../hooks/useFetchFiles";
 import dayjs from "dayjs";
 
-function Sidebar({ setId }) {
+function Sidebar({ id, setId }) {
   const files = useFetchFiles();
 
+  // CRUD -> U
   const updateFileName = async (id, newName) => {
     const fileDoc = doc(db, "files", id);
     const newFields = { name: newName };
     // should I put "await" for "updateDoc()"?
     updateDoc(fileDoc, newFields);
+  };
+
+  // const setActiveElement = () => {
+  //   const docs = document.querySelectorAll(".current-document");
+  //   console.log(docs);
+  //   console.log(this);
+  //   docs.forEach((doc) => {
+  //     doc.style.backgroundColor = "#2B2D31";
+  //     elem.style.backgroundColor = "#2B2D31";
+  //   });
+  // };
+
+  const removeStyles = () => {
+    const docs = document.querySelectorAll(".current-document");
+    docs.forEach((doc) => {
+      doc.style.backgroundColor = "#1D1F22";
+    });
   };
 
   return (
@@ -35,7 +52,22 @@ function Sidebar({ setId }) {
                 <div
                   className="current-document"
                   key={file.id}
-                  onClick={() => setId(file.id)}
+                  id={file.id}
+                  onClick={() => {
+                    setId(file.id);
+                    removeStyles();
+                    document.getElementById(
+                      `${file.id}`
+                    ).style.backgroundColor = "#2B2D31";
+
+                    // console.log(`The ID of this file is: ${file.id}`);
+                    // console.log(`The current ID is: ${id}`);
+                    // if (file.id === id) {
+                    //   document.querySelector(
+                    //     `#${file.id}`
+                    //   ).style.backgroundColor = "#2B2D31";
+                    // }
+                  }}
                 >
                   <img
                     className="icon-document"

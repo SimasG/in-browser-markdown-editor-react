@@ -10,15 +10,23 @@ function NewFileModal() {
 
   // CRUD -> C
   const createFile = async (e) => {
+    // Preventing the default form submission behavior
     e.preventDefault();
+    document.querySelector(".new-file-modal-container").style.display = "none";
+    // Generating an id for each new file created
     const id = uuidv4();
+    // Declaring the reference to a particular document in Firebase (the variable name is a bit misleading)
     const filesCollectionRef = doc(db, "files", id);
+    // Creating a new document in Firebase with a manually created id.
+    // "addDoc" function would generated a unique id for each document for you. It wouldn't really be a
+    // separate entry within the document though. That's why setting our own ids can be better.
     await setDoc(filesCollectionRef, {
       name: newFileName,
       content: "",
       id: id,
       updatedAt: Timestamp.fromDate(new Date()),
     });
+    setNewFileName("");
   };
 
   return (

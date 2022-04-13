@@ -55,14 +55,15 @@ function App() {
         {/* Aka the file name in the header should reflect the currently viewed file */}
         <Header editorState={editorState} id={id} />
         {/* This is where we can set a new (active) id by clicking on the file */}
-        <Sidebar setId={setId} />
-        {/*  */}
+        <Sidebar setId={setId} id={id} />
+        {/* Passing in the editorState & id props to change the file content according to the state of id */}
+        {/* Passing in the setEditorState props to change the file content. */}
         <Main
           editorState={editorState}
           setEditorState={setEditorState}
           id={id}
         />
-        <DeleteModal />
+        <DeleteModal setId={setId} id={id} />
         <NewFileModal />
         <Toaster />
       </>

@@ -14,10 +14,15 @@ function Main({ editorState, setEditorState, id }) {
   const files = useFetchFiles();
 
   useEffect(() => {
+    // If the files haven't been fetched yet, stop the function
     if (!files) return;
+    // The file whose id matches the current id becomes the current file
     const currentFile = files.find((file) => file.id === id);
+    // If the current file hasn't been fetched yet, stop the function
     if (!currentFile) return;
     setEditorState(currentFile.content);
+    // The functions reruns whenever there are changes in the files (changed name, content, or id?),
+    // id (changed id?) or setEditorState (changed markdown content)
   }, [files, id, setEditorState]);
 
   const renderText = (mdText) => {
@@ -31,7 +36,6 @@ function Main({ editorState, setEditorState, id }) {
   useEffect(() => {
     if (width < 768) {
       document.querySelector(".markdown-container").style.display = "block";
-      document.querySelector("#preview-container").style.display = "block";
     }
   }, [width]);
 
