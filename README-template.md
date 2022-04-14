@@ -5,7 +5,7 @@ https://betterprogramming.pub/create-your-own-markdown-editor-with-react-6906ea2
 1. Style setup -> DONE
 2. Layout setup (no need to polish the styles perfectly) -> DONE
 3. MD library setup -> DONE
-4. CRUD -> WIP
+4. CRUD -> DONE
 5. Authentication -> WIP
 6. Deploy
 
@@ -20,6 +20,7 @@ TODO: (maybe) fix small things
 - Change date updated format
 - Input validation for file names (must be .md)
 - Make the width of the file name input div only as big as the file name itself
+- Hide my api key & auth domain in firebase-config
 
 .
 .

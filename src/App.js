@@ -7,6 +7,7 @@ import Main from "./components/Main";
 import Sidebar from "./components/Sidebar";
 import DeleteModal from "./components/DeleteModal";
 import NewFileModal from "./components/NewFileModal";
+import AuthModal from "./components/AuthModal";
 import useFetchFiles from "./hooks/useFetchFiles";
 
 const theme = {
@@ -65,6 +66,7 @@ function App() {
         />
         <DeleteModal setId={setId} id={id} />
         <NewFileModal />
+        <AuthModal />
         <Toaster />
       </>
     </ThemeProvider>

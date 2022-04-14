@@ -3,6 +3,7 @@ import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { db } from "../firebase-config";
 import toast from "react-hot-toast";
 import useFetchFiles from "../hooks/useFetchFiles";
+import { signInWithGoogle } from "../firebase-config";
 
 const Header = ({ id, editorState }) => {
   const files = useFetchFiles();
@@ -27,10 +28,6 @@ const Header = ({ id, editorState }) => {
     }
   };
 
-  const openDeleteModal = () => {
-    document.querySelector(".delete-modal-container").style.display = "flex";
-  };
-
   // CRUD -> U
   const saveFile = async (e) => {
     const filesCollectionRef = doc(db, "files", id);
@@ -53,15 +50,31 @@ const Header = ({ id, editorState }) => {
           {files && id && `${files.find((file) => file.id === id).name}`}
         </p>
       </div>
-      <img
-        onClick={openDeleteModal}
-        className="delete"
-        src="./assets/icon-delete.svg"
-        alt=""
-      />
-      {/* Storing the current file content state (editorState) on click */}
-      <div onClick={saveFile} className="save-file-icon">
-        <img src="./assets/icon-save.svg" alt="" />
+      <div className="header-btn-section">
+        <img
+          onClick={() => {
+            document.querySelector(".delete-modal-container").style.display =
+              "flex";
+          }}
+          className="delete-img"
+          src="./assets/icon-delete.svg"
+          alt=""
+        />
+        {/* Storing the current file content state (editorState) on click */}
+        <div onClick={saveFile} className="save-file-icon">
+          <img src="./assets/icon-save.svg" alt="" />
+        </div>
+        <button
+          onClick={() => {
+            document.querySelector(".auth-modal-container").style.display =
+              "flex";
+          }}
+          className="authentication-btn"
+        >
+          Sign Up
+        </button>
+        <h4>{localStorage.getItem("name")}</h4>
+        <img src={localStorage.getItem("profilePic")} alt="" />
       </div>
     </StyledHeader>
   );
