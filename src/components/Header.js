@@ -1,9 +1,9 @@
 import { StyledHeader } from "./styles/Header.styled";
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
-import { db } from "../firebase-config";
+import { db, auth } from "../firebase-config";
 import toast from "react-hot-toast";
 import useFetchFiles from "../hooks/useFetchFiles";
-import { signInWithGoogle } from "../firebase-config";
+import { signOut } from "firebase/auth";
 
 const Header = ({ id, editorState }) => {
   const files = useFetchFiles();
@@ -38,25 +38,27 @@ const Header = ({ id, editorState }) => {
     toast.success("File successfully updated!");
   };
 
+  const file = files && id && files.find((file) => file.id === id);
+
   return (
     <StyledHeader className="header open">
       <button className="burger-menu" onClick={toggleSlideMenu}>
         <img src="./assets/icon-menu.svg" alt="" />
       </button>
-      <div className="current-file">
-        <img src="./assets/icon-document.svg" alt="" />
-        <p className="current-file-name">
-          {/* Displaying the file name of the document whose id matches the current id state */}
-          {files && id && `${files.find((file) => file.id === id).name}`}
-        </p>
-      </div>
+      {file && (
+        <div className="current-file">
+          <img src="./assets/icon-document.svg" alt="" />
+          <p className="current-file-name">{file.name}</p>
+        </div>
+      )}
+
       <div className="header-btn-section">
         <img
+          className="delete-img"
           onClick={() => {
             document.querySelector(".delete-modal-container").style.display =
               "flex";
           }}
-          className="delete-img"
           src="./assets/icon-delete.svg"
           alt=""
         />
@@ -69,12 +71,32 @@ const Header = ({ id, editorState }) => {
             document.querySelector(".auth-modal-container").style.display =
               "flex";
           }}
-          className="authentication-btn"
+          className="btn sign-up-btn"
         >
           Sign Up
         </button>
-        <h4>{localStorage.getItem("name")}</h4>
-        <img src={localStorage.getItem("profilePic")} alt="" />
+        <button className="btn sign-in-btn">Sign In</button>
+        <button
+          onClick={() => {
+            signOut(auth).then(() => {
+              toast.success("Signed out!");
+            });
+          }}
+          className="btn sign-out-btn"
+        >
+          Sign Out
+        </button>
+        {/* If a user is signed up, show the following JSX. */}
+        {auth.currentUser && (
+          <>
+            <h4 className="user-name">{auth.currentUser.displayName}</h4>
+            <img
+              className="user-profile-pic"
+              src={auth.currentUser.photoURL}
+              alt=""
+            />
+          </>
+        )}
       </div>
     </StyledHeader>
   );

@@ -45,7 +45,7 @@ export const StyledHeader = styled.header`
         transition: 0.4s;
       }
     }
-    .authentication-btn {
+    .btn {
       padding: 1.172rem;
       background-color: ${(props) => props.theme.colors.lightOrange};
       color: #fff;
@@ -54,6 +54,16 @@ export const StyledHeader = styled.header`
         background-color: ${(props) => props.theme.colors.brightOrange};
         transition: 0.4s;
       }
+    }
+    .user-name {
+      font-family: "Roboto", sans-serif;
+      color: #fff;
+      font-size: 1.6rem;
+    }
+    .user-profile-pic {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 90px;
     }
   }
 `;

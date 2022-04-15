@@ -39,7 +39,7 @@ function App() {
 
   useEffect(() => {
     // If the files haven't been fetched yet, stop the function
-    if (!files) return;
+    if (!files || files.length === 0) return;
     // If id has a truthy state (means we clicked on one of the files), stop the function
     if (id) return;
     // Set the Id to the first element in the files array as the default view

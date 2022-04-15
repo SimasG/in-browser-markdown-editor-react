@@ -1,7 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
 // "getAuth" basically tell Firestore that you will be using authentication
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAQxnClStgwhO5BWQzSyD6ifEssWr5PeMQ",
@@ -25,36 +30,35 @@ export const provider = new GoogleAuthProvider();
 // the user currently authenticated by our app & see which user is currently authenticated
 export const auth = getAuth(app);
 
-export const signInWithGoogle = () => {
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      // Why are these tokens below different?
-      // console.log(result.user.accessToken);
-      // console.log(token);
-      // The signed-in user info.
-      const user = result.user;
-      // ...
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
 
-      const name = result.user.displayName;
-      const profilePic = result.user.photoURL;
+    const user = result.user;
 
-      localStorage.setItem("name", name);
-      localStorage.setItem("profilePic", profilePic);
-
-      console.log(localStorage.getItem("name"));
-      console.log(localStorage.getItem("profilePic"));
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
-    });
+    const name = result.user.displayName;
+    const profilePic = result.user.photoURL;
+    // localStorage.setItem("name", name);
+    // localStorage.setItem("profilePic", profilePic);
+  } catch (error) {
+    // Handle Errors here.
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // The email of the user's account used.
+    const email = error.email;
+    // The AuthCredential type that was used.
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    // ...
+  }
 };
+
+// Sign Out
+export const signOutUser = () => {
+  signOut(auth).then(() => {
+    console.log("does this work?");
+  });
+};
+
+// Log In

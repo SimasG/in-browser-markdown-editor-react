@@ -1,11 +1,13 @@
 {
   "name": "in-browser-markdown-editor-react",
   "version": "0.1.0",
+  "main": "index.js",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^12.1.4",
+    "@testing-library/react": "^13.0.1",
     "@testing-library/user-event": "^13.5.0",
+    "babel-preset-expo": "^9.0.2",
     "dayjs": "^1.11.0",
     "dompurify": "^2.3.6",
     "firebase": "^9.6.10",
@@ -42,6 +44,7 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
+    ],
+    "main": "dist/cjs"
   }
 }
