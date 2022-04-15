@@ -1,11 +1,14 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
-// "getAuth" basically tell Firestore that you will be using authentication
+import toast from "react-hot-toast";
+// "getAuth" basically tells Firestore that you will be using authentication
 import {
   getAuth,
   signInWithPopup,
   GoogleAuthProvider,
-  signOut,
+  sendSignInLinkToEmail,
+  isSignInWithEmailLink,
+  signInWithEmailLink,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -30,20 +33,16 @@ export const provider = new GoogleAuthProvider();
 // the user currently authenticated by our app & see which user is currently authenticated
 export const auth = getAuth(app);
 
+// Google Sign Up/In
 export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;
-
     const user = result.user;
-
     const name = result.user.displayName;
     const profilePic = result.user.photoURL;
-    // localStorage.setItem("name", name);
-    // localStorage.setItem("profilePic", profilePic);
   } catch (error) {
-    // Handle Errors here.
     const errorCode = error.code;
     const errorMessage = error.message;
     // The email of the user's account used.
@@ -54,11 +53,37 @@ export const signInWithGoogle = async () => {
   }
 };
 
-// Sign Out
-export const signOutUser = () => {
-  signOut(auth).then(() => {
-    console.log("does this work?");
+// Function to send the magic link to user
+export const emailMagicLink = async (email) => {
+  return await sendSignInLinkToEmail(auth, email, {
+    url: `${window.location.origin}`,
+    handleCodeInApp: true,
+  }).then(() => {
+    toast.success("A Magic Link Has Been Sent To Your Email!");
+    window.localStorage.setItem("emailForSignIn", email);
   });
 };
 
-// Log In
+// Function to sign user in with the magic link
+export const signInWithMagicLink = () => {
+  // Get the email if available. This should be available if the user completes
+  // the flow on the same device where they started it.
+  let email = window.localStorage.getItem("emailForSignIn");
+
+  // Don't understand this if statement
+  if (!email) {
+    // User opened the link on a different device. To prevent session fixation
+    // attacks, ask the user to provide the associated email again.
+    email = window.prompt("Please provide your email for confirmation");
+  }
+
+  signInWithEmailLink(auth, email, window.location.href)
+    .then((result) => {
+      // Delete email from local storage
+      window.localStorage.removeItem("emailForSignIn");
+      toast.success("You have successfully been signed in!");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};

@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { StyledHeader } from "./styles/Header.styled";
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import toast from "react-hot-toast";
 import useFetchFiles from "../hooks/useFetchFiles";
-import { signOut } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 
 const Header = ({ id, editorState }) => {
   const files = useFetchFiles();
@@ -38,6 +39,21 @@ const Header = ({ id, editorState }) => {
     toast.success("File successfully updated!");
   };
 
+  // Why does the initial state have to be an object? Seems to be working without it.
+  const [user, setUser] = useState({});
+
+  // Runs every time there is a change in the Auth State -> like a useEffect for Auth.
+  // Benefit -> no need to refresh to see the auth changes
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
+  });
+
+  const signOutUser = () => {
+    signOut(auth).then(() => {
+      toast.success("Logged out!");
+    });
+  };
+
   const file = files && id && files.find((file) => file.id === id);
 
   return (
@@ -66,35 +82,25 @@ const Header = ({ id, editorState }) => {
         <div onClick={saveFile} className="save-file-icon">
           <img src="./assets/icon-save.svg" alt="" />
         </div>
-        <button
-          onClick={() => {
-            document.querySelector(".auth-modal-container").style.display =
-              "flex";
-          }}
-          className="btn sign-up-btn"
-        >
-          Sign Up
-        </button>
-        <button className="btn sign-in-btn">Sign In</button>
-        <button
-          onClick={() => {
-            signOut(auth).then(() => {
-              toast.success("Signed out!");
-            });
-          }}
-          className="btn sign-out-btn"
-        >
-          Sign Out
-        </button>
+        {!user && (
+          <button
+            onClick={() => {
+              document.querySelector(".auth-modal-container").style.display =
+                "flex";
+            }}
+            className="btn sign-in-btn"
+          >
+            Sign In
+          </button>
+        )}
         {/* If a user is signed up, show the following JSX. */}
-        {auth.currentUser && (
+        {user && (
           <>
-            <h4 className="user-name">{auth.currentUser.displayName}</h4>
-            <img
-              className="user-profile-pic"
-              src={auth.currentUser.photoURL}
-              alt=""
-            />
+            <button onClick={signOutUser} className="btn sign-out-btn">
+              Sign Out
+            </button>
+            <h4 className="user-name">{user.displayName}</h4>
+            <img className="user-profile-pic" src={user.photoURL} alt="" />
           </>
         )}
       </div>

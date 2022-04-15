@@ -37,5 +37,19 @@ export const StyledAuthModal = styled.section`
         color: #fff;
       }
     }
+    .send-email-link-btn {
+      display: none;
+    }
+    .email-input {
+      margin-top: 3rem;
+      outline: none;
+      width: 100%;
+      height: 5rem;
+      border-radius: 8px;
+      font-size: 1.6rem;
+      padding: 1rem;
+      font-family: "Roboto", sans-serif;
+      display: none;
+    }
   }
 `;

@@ -9,6 +9,8 @@ import DeleteModal from "./components/DeleteModal";
 import NewFileModal from "./components/NewFileModal";
 import AuthModal from "./components/AuthModal";
 import useFetchFiles from "./hooks/useFetchFiles";
+import { isSignInWithEmailLink } from "firebase/auth";
+import { auth, signInWithMagicLink } from "./firebase-config";
 
 const theme = {
   width: {
@@ -47,6 +49,14 @@ function App() {
     // The useEffect functions reruns whenever there are changes in files (file.name/file.content) or
     // the id (not sure how ids could change, maybe when a new file is created and a new id generated?)
   }, [files, id]);
+
+  // Listening to the magic link click
+  useEffect(() => {
+    if (isSignInWithEmailLink(auth, window.location.href)) {
+      signInWithMagicLink();
+      console.log("User has been signed in with magic link!");
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
