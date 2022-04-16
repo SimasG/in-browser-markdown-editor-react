@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { StyledHeader } from "./styles/Header.styled";
 import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { db, auth } from "../firebase-config";
 import toast from "react-hot-toast";
 import useFetchFiles from "../hooks/useFetchFiles";
 import { signOut, onAuthStateChanged } from "firebase/auth";
+import { UserContext } from "../context/UserContext";
 
 const Header = ({ id, editorState }) => {
-  const files = useFetchFiles();
+  const user = useContext(UserContext);
+  const files = useFetchFiles(user?.uid);
 
   const toggleSlideMenu = () => {
     const sidebar = document.querySelector(".sidebar");
@@ -38,15 +40,6 @@ const Header = ({ id, editorState }) => {
     });
     toast.success("File successfully updated!");
   };
-
-  // Why does the initial state have to be an object? Seems to be working without it.
-  const [user, setUser] = useState({});
-
-  // Runs every time there is a change in the Auth State -> like a useEffect for Auth.
-  // Benefit -> no need to refresh to see the auth changes
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
 
   const signOutUser = () => {
     signOut(auth).then(() => {

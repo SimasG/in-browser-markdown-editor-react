@@ -9,6 +9,11 @@ https://betterprogramming.pub/create-your-own-markdown-editor-with-react-6906ea2
 5. Authentication -> WIP
 6. Deploy
 
+Nasty bugs:
+
+- Populate sidebar with files
+- Fix markdown editing (crashing with onAuthStateChanged)
+
 TODO: (maybe) fix small things
 
 - sidebar transition
@@ -22,26 +27,10 @@ TODO: (maybe) fix small things
 - Make the width of the file name input div only as big as the file name itself
 - Hide my api key & auth domain in firebase-config
 
-.
-.
-.
-.
-.
-.
-.
+Future Considerations:
 
-const [files, setFiles] = useState([]);
+- Experiment with UseContext for setting global state next time (a lot of copy-pasting & spaghetti now)
 
-// CRUD -> R
-useEffect(() => {
-// Creating a reference to a specific collection in Firestore. It allows to work with the data here.
-const filesCollectionRef = collection(db, "files");
-const getFiles = async () => {
-// "getDocs" returns documents from a specific collection
-const data = await getDocs(filesCollectionRef);
-// "doc.data" accesses the collection fields/documents without the id, that's why we
-// destructure it and add the id for each entry manually
-setFiles(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-};
-getFiles();
-}, []);
+Q's:
+
+- Can I pass props to a helper hook (e.g. useFetchFiles.js)?

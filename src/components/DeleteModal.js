@@ -2,9 +2,12 @@ import { DeleteModalStyled } from "./styles/DeleteModal.styled";
 import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
 import useFetchFiles from "../hooks/useFetchFiles";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 function DeleteModal({ id, setId }) {
-  const files = useFetchFiles();
+  const user = useContext(UserContext);
+  const files = useFetchFiles(user?.uid);
 
   const removeModal = () => {
     document.querySelector(".delete-modal-container").style.display = "none";

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import GlobalStyles from "./components/styles/Global";
 import { ThemeProvider } from "styled-components";
 import { Toaster } from "react-hot-toast";
@@ -9,8 +9,11 @@ import DeleteModal from "./components/DeleteModal";
 import NewFileModal from "./components/NewFileModal";
 import AuthModal from "./components/AuthModal";
 import useFetchFiles from "./hooks/useFetchFiles";
-import { isSignInWithEmailLink } from "firebase/auth";
-import { auth, signInWithMagicLink } from "./firebase-config";
+import { isSignInWithEmailLink, onAuthStateChanged } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { db, auth, signInWithMagicLink } from "./firebase-config";
+
+import { UserProvider, UserContext } from "./context/UserContext";
 
 const theme = {
   width: {
@@ -34,7 +37,16 @@ const theme = {
 };
 
 function App() {
-  const files = useFetchFiles();
+  const user = useContext(UserContext);
+  const files = useFetchFiles(user?.uid);
+
+  useEffect(() => {
+    if (!user) return;
+    // Specifying reference to a specific doc within a collection
+    const ref = doc(db, "users", `${user.uid}`);
+    // Create a new doc within "users" collection
+    setDoc(ref, { uid: user.uid, email: user.email });
+  }, [user]);
 
   const [editorState, setEditorState] = useState("");
   const [id, setId] = useState(null);
@@ -54,30 +66,32 @@ function App() {
   useEffect(() => {
     if (isSignInWithEmailLink(auth, window.location.href)) {
       signInWithMagicLink();
-      console.log("User has been signed in with magic link!");
+      // Clear URL
     }
   }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <>
-        <GlobalStyles />
-        {/* Passing in the editorState & id props to change the file name according to the state of id */}
-        {/* Aka the file name in the header should reflect the currently viewed file */}
-        <Header editorState={editorState} id={id} />
-        {/* This is where we can set a new (active) id by clicking on the file */}
-        <Sidebar setId={setId} id={id} />
-        {/* Passing in the editorState & id props to change the file content according to the state of id */}
-        {/* Passing in the setEditorState props to change the file content. */}
-        <Main
-          editorState={editorState}
-          setEditorState={setEditorState}
-          id={id}
-        />
-        <DeleteModal setId={setId} id={id} />
-        <NewFileModal />
-        <AuthModal />
-        <Toaster />
+        <UserProvider>
+          <GlobalStyles />
+          {/* Passing in the editorState & id props to change the file name according to the state of id */}
+          {/* Aka the file name in the header should reflect the currently viewed file */}
+          <Header editorState={editorState} id={id} />
+          {/* This is where we can set a new (active) id by clicking on the file */}
+          <Sidebar setId={setId} id={id} />
+          {/* Passing in the editorState & id props to change the file content according to the state of id */}
+          {/* Passing in the setEditorState props to change the file content. */}
+          <Main
+            editorState={editorState}
+            setEditorState={setEditorState}
+            id={id}
+          />
+          <DeleteModal setId={setId} id={id} />
+          <NewFileModal />
+          <AuthModal />
+          <Toaster />
+        </UserProvider>
       </>
     </ThemeProvider>
   );

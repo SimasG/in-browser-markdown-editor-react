@@ -3,9 +3,12 @@ import { db } from "../firebase-config";
 import { updateDoc, doc } from "firebase/firestore";
 import useFetchFiles from "../hooks/useFetchFiles";
 import dayjs from "dayjs";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 function Sidebar({ id, setId }) {
-  const files = useFetchFiles();
+  const user = useContext(UserContext);
+  const files = useFetchFiles(user?.uid);
 
   // CRUD -> U
   const updateFileName = async (id, newName) => {

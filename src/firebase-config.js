@@ -36,20 +36,9 @@ export const auth = getAuth(app);
 // Google Sign Up/In
 export const signInWithGoogle = async () => {
   try {
-    const result = await signInWithPopup(auth, provider);
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential.accessToken;
-    const user = result.user;
-    const name = result.user.displayName;
-    const profilePic = result.user.photoURL;
+    await signInWithPopup(auth, provider);
   } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // The email of the user's account used.
-    const email = error.email;
-    // The AuthCredential type that was used.
-    const credential = GoogleAuthProvider.credentialFromError(error);
-    // ...
+    console.log(error);
   }
 };
 
@@ -70,7 +59,6 @@ export const signInWithMagicLink = () => {
   // the flow on the same device where they started it.
   let email = window.localStorage.getItem("emailForSignIn");
 
-  // Don't understand this if statement
   if (!email) {
     // User opened the link on a different device. To prevent session fixation
     // attacks, ask the user to provide the associated email again.

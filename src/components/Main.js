@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { StyledMain } from "./styles/Main.styled";
 import useWindowWidth from "../hooks/useWindowWidth";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import useFetchFiles from "../hooks/useFetchFiles";
+import { UserContext } from "../context/UserContext";
 
 function Main({ editorState, setEditorState, id }) {
   const handleChange = (e) => {
@@ -11,7 +12,8 @@ function Main({ editorState, setEditorState, id }) {
     setEditorState(text);
   };
 
-  const files = useFetchFiles();
+  const user = useContext(UserContext);
+  const files = useFetchFiles(user?.uid);
 
   useEffect(() => {
     // If the files haven't been fetched yet, stop the function
